@@ -1,0 +1,41 @@
+services: 
+  backend:
+    container_name: ms-container-backend
+    #image: ms-image-backend 
+    build: 
+      context: ./login-microservice
+      dockerfile: Dockerfile
+    ports: 
+      - "5003:5003"
+    networks:
+      - microservice-network 
+
+  frontend:
+    container_name: ms-container-frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3410:5000"
+    networks: 
+      - microservice-network
+    environment:
+      - LOGIN_URL=http://backend:5003/api/v1/login
+      - PRODUCTS_URL=http://product:5004/api/v1/product
+      - REGISTER_URL=http://backend:5003/api/v1/register
+    depends_on:
+      - backend 
+      - product
+
+  product:
+    container_name: ms-container-products
+    build:
+      context: ./product-microservice 
+      dockerfile: Dockerfile
+    ports: 
+      - "5004:5004"
+    networks:
+      - microservice-network
+    
+networks:
+  microservice-network:
