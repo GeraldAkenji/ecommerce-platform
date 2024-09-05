@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deployment
+  namespace: gerald-env
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: microservice-frontend
+  template:
+    metadata:
+      labels:
+        app: microservice-frontend
+    spec:
+      containers:
+      - name: frontend
+        image: microservice-frontend
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 5000
+        env: 
+         - name: LOGIN_URL
+           value: http://backend-service:5003/api/v1/login
+         - name: PRODUCTS_URL
+           value: http://product-service:5004/api/v1/product
+         - name: REGISTER_URL
+           value: http://backend-service:5003/api/v1/register 

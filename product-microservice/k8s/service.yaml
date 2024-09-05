@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: product-service
+  namespace: gerald-env
+spec:
+  selector:
+    app: microservice-product
+  ports:
+    - protocol: TCP
+      port: 5004
+      targetPort: 5004
+     # nodePort: 30012
+ # type: NodePort
